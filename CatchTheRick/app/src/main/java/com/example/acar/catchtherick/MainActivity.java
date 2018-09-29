@@ -1,23 +1,9 @@
 package com.example.acar.catchtherick;
 
-
-/*
-SharedPreferences sharedPreferences = this.getSharedPreferences("com.example.acar.catchtherick", Context.MODE_PRIVATE);
-        sharedPreferences.edit().putInt("HighScore",0).apply();
-        int hScore = sharedPreferences.getInt("HighScore",0);
-        highScore.setText("High Score: "+hScore);
-        if(score>hScore){
-        sharedPreferences.edit().putInt("HighScore",score);
-        highScore.setText("High Score: "+score);
-        }
-*/
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.opengl.Visibility;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,78 +12,105 @@ import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView scoreText, timeText, highScore;
-    ImageView ImageView1,ImageView2,ImageView3,ImageView4,ImageView5,ImageView6,ImageView7,ImageView8,ImageView9;
+    TextView scoreText;
+    TextView timeText;
+    ImageView imageView1;
+    ImageView imageView2;
+    ImageView imageView3;
+    ImageView imageView4;
+    ImageView imageView5;
+    ImageView imageView6;
+    ImageView imageView7;
+    ImageView imageView8;
+    ImageView imageView9;
     int score;
+    ImageView [] imageArray;
     Handler handler;
-    Runnable runable;
+    Runnable runnable;
 
-    ImageView [] ImageArray;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ImageView1 = findViewById(R.id.imageView);
-        ImageView2 = findViewById(R.id.imageView2);
-        ImageView3 = findViewById(R.id.imageView3);
-        ImageView4 = findViewById(R.id.imageView4);
-        ImageView5 = findViewById(R.id.imageView5);
-        ImageView6 = findViewById(R.id.imageView6);
-        ImageView7 = findViewById(R.id.imageView7);
-        ImageView8 = findViewById(R.id.imageView8);
-        ImageView9 = findViewById(R.id.imageView9);
-        highScore = findViewById(R.id.highScoreText);
-        ImageArray = new ImageView[]{ImageView1,ImageView2,ImageView3,ImageView4,ImageView5,ImageView6,ImageView7,ImageView8,ImageView9};
 
-        HideImages();
-        score=0;
+        imageView1 = (ImageView) findViewById(R.id.imageView);
+        imageView2 = (ImageView) findViewById(R.id.imageView2);
+        imageView3 = (ImageView) findViewById(R.id.imageView3);
+        imageView4 = (ImageView) findViewById(R.id.imageView4);
+        imageView5 = (ImageView) findViewById(R.id.imageView5);
+        imageView6 = (ImageView) findViewById(R.id.imageView6);
+        imageView7 = (ImageView) findViewById(R.id.imageView7);
+        imageView8 = (ImageView) findViewById(R.id.imageView8);
+        imageView9 = (ImageView) findViewById(R.id.imageView9);
+
+        imageArray = new ImageView[]{imageView1, imageView2, imageView3, imageView4, imageView5, imageView6, imageView7, imageView8, imageView9};
+
+        hideImages();
+
+        score = 0;
 
 
-        new CountDownTimer(3000,1000){
+
+
+        new CountDownTimer(30000,1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {
-                timeText = findViewById(R.id.TimeText);
-                timeText.setText("Time: "+millisUntilFinished/1000);
+                timeText = (TextView) findViewById(R.id.textTime);
+                timeText.setText("Time: " + millisUntilFinished / 1000);
             }
+
             @Override
             public void onFinish() {
-                timeText = findViewById(R.id.TimeText);
-                timeText.setText("Time Off ");
-                handler.removeCallbacks(runable);
-                for(ImageView image: ImageArray){
+
+                timeText = (TextView) findViewById(R.id.textTime);
+                timeText.setText("Time's Off");
+                handler.removeCallbacks(runnable);
+                for (ImageView image : imageArray) {
                     image.setVisibility(View.INVISIBLE);
                 }
+
             }
         }.start();
 
-
-
-
     }
 
-    public void increaseScore(View view){
+
+
+    public void increaseScore(View view) {
+
+        scoreText = (TextView) findViewById(R.id.textScore);
+
         score++;
-        scoreText = findViewById(R.id.ScoreText);
-        scoreText.setText("Score: "+score);
+
+        scoreText.setText("Score: " + score);
+
+
     }
 
+    public void hideImages() {
 
-    public void HideImages(){
         handler = new Handler();
-        runable = new Runnable() {
+        runnable = new Runnable() {
             @Override
             public void run() {
-                for(ImageView image: ImageArray){
+
+                for (ImageView image : imageArray) {
                     image.setVisibility(View.INVISIBLE);
                 }
-                Random rnd = new Random();
-                ImageArray[rnd.nextInt(8-0)].setVisibility(View.VISIBLE);
 
-                handler.postDelayed(this,400);
+                Random r = new Random();
+                int i = r.nextInt(8-0);
+                imageArray[i].setVisibility(View.VISIBLE);
+
+                handler.postDelayed(this, 500);
+
             }
         };
-        handler.post(runable);
+
+        handler.post(runnable);
 
     }
+
+
 }
