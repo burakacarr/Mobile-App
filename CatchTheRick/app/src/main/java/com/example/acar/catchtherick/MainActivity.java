@@ -39,6 +39,8 @@ public class MainActivity extends AppCompatActivity {
 
         sharedPreferences = this.getSharedPreferences("com.example.acar.catchtherick",Context.MODE_PRIVATE);
         //sharedPreferences.edit().putInt("Hscore",0).apply();
+        HscoreText = (TextView)findViewById(R.id.textHighScore);
+        HscoreText.setText("High Score: "+sharedPreferences.getInt("Hscore",0));
         imageView1 = (ImageView) findViewById(R.id.imageView);
         imageView2 = (ImageView) findViewById(R.id.imageView2);
         imageView3 = (ImageView) findViewById(R.id.imageView3);
