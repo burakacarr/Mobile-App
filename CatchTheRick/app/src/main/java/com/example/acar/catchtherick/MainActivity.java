@@ -1,5 +1,7 @@
 package com.example.acar.catchtherick;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -14,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     TextView scoreText;
     TextView timeText;
+    TextView HscoreText;
     ImageView imageView1;
     ImageView imageView2;
     ImageView imageView3;
@@ -24,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView imageView8;
     ImageView imageView9;
     int score;
+    SharedPreferences sharedPreferences;
     ImageView [] imageArray;
     Handler handler;
     Runnable runnable;
@@ -33,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        sharedPreferences = this.getSharedPreferences("com.example.acar.catchtherick",Context.MODE_PRIVATE);
+        //sharedPreferences.edit().putInt("Hscore",0).apply();
         imageView1 = (ImageView) findViewById(R.id.imageView);
         imageView2 = (ImageView) findViewById(R.id.imageView2);
         imageView3 = (ImageView) findViewById(R.id.imageView3);
@@ -69,6 +75,11 @@ public class MainActivity extends AppCompatActivity {
                 for (ImageView image : imageArray) {
                     image.setVisibility(View.INVISIBLE);
                 }
+                if(score>sharedPreferences.getInt("Hscore",0)){
+                    sharedPreferences.edit().putInt("Hscore",score).apply();
+                }
+                HscoreText = (TextView)findViewById(R.id.textHighScore);
+                HscoreText.setText("High Score: "+sharedPreferences.getInt("Hscore",0));
 
             }
         }.start();
