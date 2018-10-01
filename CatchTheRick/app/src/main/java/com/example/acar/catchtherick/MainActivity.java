@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
     TextView scoreText;
     TextView timeText;
     TextView HscoreText;
+    TextView levelText;
     ImageView imageView1;
     ImageView imageView2;
     ImageView imageView3;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView imageView8;
     ImageView imageView9;
     int score;
+    int level=0;
     SharedPreferences sharedPreferences;
     ImageView [] imageArray;
     Handler handler;
@@ -59,13 +61,20 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+        final long milisn = 30000;
 
-        new CountDownTimer(30000,1000) {
+        new CountDownTimer(milisn,1000) {
 
             @Override
             public void onTick(long millisUntilFinished) {
                 timeText = (TextView) findViewById(R.id.textTime);
                 timeText.setText("Time: " + millisUntilFinished / 1000);
+                if(score>(level*30+15)){
+                    millisUntilFinished = millisUntilFinished+15000;
+                    level++;
+                    levelText = (TextView)findViewById(R.id.textLevel);
+                    levelText.setText("Level: "+level);
+                }
             }
 
             @Override
