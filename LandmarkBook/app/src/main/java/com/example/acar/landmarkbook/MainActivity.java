@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     static Bitmap selectedImages;
+    static int DetailNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
         final ArrayList<String> LandmarkNames = new ArrayList<String>();
 
         LandmarkNames.add("Pissa");
-        LandmarkNames.add("Coliseum");
+        LandmarkNames.add("Colosseum");
         LandmarkNames.add("Eiffel");
         LandmarkNames.add("London Bridge");
 
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         // bitmap oluşturuyoruz resimleri listeye atmak için
         Bitmap pissa = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.pisa);
         // tüm resimler için aynı işlemi yapıyoruz
-        Bitmap Coliseum = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.coliseum);
+        Bitmap Colosseum = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.coliseum);
         Bitmap Eiffel = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.eiffel);
         Bitmap LondonBridge = BitmapFactory.decodeResource(getApplicationContext().getResources(),R.drawable.london);
 
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
         // şimdi arraylistime bitmapleri ekliyorum
         LandmarkImages.add(pissa);
-        LandmarkImages.add(Coliseum);
+        LandmarkImages.add(Colosseum);
         LandmarkImages.add(Eiffel);
         LandmarkImages.add(LondonBridge);
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1,LandmarkNames);
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("name",LandmarkNames.get(position));
                //static değişken ile kullanma
                // selectedImages = LandmarkImages.get(position);
-
+                DetailNumber=position;
                 //class yardımıyla kullanma
                 Bitmap bitmap = LandmarkImages.get(position);
 
