@@ -2,6 +2,7 @@ package com.example.acar.travelbook;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -44,8 +45,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                LatLng userLoc = new LatLng(location.getAltitude(), location.getLongitude());
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLoc,15));
+                //ilk kullanım kontrolü
+
+                SharedPreferences sharedPreferences = MapsActivity.this.getSharedPreferences(" com.example.acar.travelbook",MODE_PRIVATE);
+                boolean fistTimeCheck = sharedPreferences.getBoolean("notFistTime",false);
+                //firstimecheck ==false demek
+                if(!fistTimeCheck){
+                    LatLng userLoc = new LatLng(location.getAltitude(), location.getLongitude());
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLoc,10));
+                    sharedPreferences.edit().putBoolean("notFistTime",true).apply();
+
+                }
+
+
             }
 
             @Override
@@ -71,10 +83,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             else{
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+
+                mMap.clear();
+                Location lastLocation  =locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if(lastLocation != null){
+                    LatLng latLng = new LatLng(lastLocation.getAltitude(),lastLocation.getLongitude());
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
+                }
             }
         }
         else{
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+            mMap.clear();
+            Location lastLocation  =locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if(lastLocation != null){
+                LatLng latLng = new LatLng(lastLocation.getAltitude(),lastLocation.getLongitude());
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
+            }
         }
     }
     //ContextCompact ile izin almz
@@ -85,6 +110,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if(requestCode==1){
                 if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED){
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
+
+                    mMap.clear();
+                    Location lastLocation  =locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    if(lastLocation != null){
+                        LatLng latLng = new LatLng(lastLocation.getAltitude(),lastLocation.getLongitude());
+                        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
+                    }
+
                 }
             }
         }
