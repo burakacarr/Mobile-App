@@ -2,8 +2,11 @@ package com.example.acar.travelbook;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -32,6 +35,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     LocationListener locationListener;
     LocationManager locationManager;
+    static SQLiteDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         mMap.setOnMapLongClickListener(this);
+        Intent ıntent =getIntent();
+        String info = ıntent.getStringExtra("info");
+        if(info.matches("new")){
+
+
         locationManager = (LocationManager)this.getSystemService(Context.LOCATION_SERVICE);
         locationListener = new LocationListener() {
             @Override
@@ -110,6 +119,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         }
     }
+    else{
+            mMap.clear();
+            int position = ıntent.getIntExtra("position",0);
+            LatLng latLng = new LatLng(MainActivity.locations.get(position).latitude,MainActivity.locations.get(position).longitude);
+            String placeName = MainActivity.names.get(position);
+
+            mMap.addMarker(new MarkerOptions().title(placeName).position(latLng));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
+        }
+    }
+
     //ContextCompact ile izin almz
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -120,9 +140,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,0,0,locationListener);
 
                     mMap.clear();
-                    Location lastLocation  =locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                    if(lastLocation != null){
-                        LatLng latLng = new LatLng(lastLocation.getAltitude(),lastLocation.getLongitude());
+
+                    Intent ıntent = getIntent();
+                    String info = ıntent.getStringExtra("info");
+                    if(info.matches("new")) {
+                        Location lastLocation  =locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                        if(lastLocation != null){
+                            LatLng latLng = new LatLng(lastLocation.getAltitude(),lastLocation.getLongitude());
+                            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
+                        }
+                    }
+                    else{
+                        mMap.clear();
+                        int position = ıntent.getIntExtra("position",0);
+                        LatLng latLng = new LatLng(MainActivity.locations.get(position).latitude,MainActivity.locations.get(position).longitude);
+                        String placeName = MainActivity.names.get(position);
+
+                        mMap.addMarker(new MarkerOptions().title(placeName).position(latLng));
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,10));
                     }
 
@@ -156,5 +190,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         mMap.addMarker(new MarkerOptions().title(address).position(latLng));
         Toast.makeText(getApplicationContext(),"New Place",Toast.LENGTH_LONG).show();
+
+        MainActivity.names.add(address);
+        MainActivity.locations.add(latLng);
+        MainActivity.arrayAdapter.notifyDataSetChanged();
+        try{
+            Double l1 = latLng.latitude;
+            Double l2 = latLng.longitude;
+            String coord1 = l1.toString();
+            String coord2 = l2.toString();
+            database = this.openOrCreateDatabase("Places",MODE_PRIVATE,null);
+            database.execSQL("CREATE TABLE IF NOT EXISTS places (name VARCHAR, lat VARCHAR, long VARCHAR)");
+
+            String toCompile = "INSERT INTO places (name,lat,long) VALUES(?,?,?)";
+
+            SQLiteStatement statement = database.compileStatement(toCompile);
+
+            statement.bindString( 1,address);
+            statement.bindString(2,coord1);
+            statement.bindString(3,coord2);
+            statement.execute();
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }
