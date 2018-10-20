@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/TRtext"
+        android:layout_width="143dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="61dp"
+        android:gravity="center_horizontal"
+        android:text="TR::"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/JPYtext" />
+
+    <TextView
+        android:id="@+id/JPYtext"
+        android:layout_width="143dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="38dp"
+        android:gravity="center_horizontal"
+        android:text="JPY:"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/TRtext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/USDtext" />
+
+    <TextView
+        android:id="@+id/USDtext"
+        android:layout_width="143dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="36dp"
+        android:gravity="center_horizontal"
+        android:text="USD:"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/JPYtext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CEFtext" />
+
+    <TextView
+        android:id="@+id/CEFtext"
+        android:layout_width="143dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="28dp"
+        android:gravity="center_horizontal"
+        android:text="CEF:"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/USDtext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/CADtext" />
+
+    <TextView
+        android:id="@+id/CADtext"
+        android:layout_width="143dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="28dp"
+        android:gravity="center_horizontal"
+        android:text="CAD:"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/CEFtext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="46dp"
+        android:onClick="GetRates"
+        android:text="Get Rates"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TRtext" />
+</android.support.constraint.ConstraintLayout>
