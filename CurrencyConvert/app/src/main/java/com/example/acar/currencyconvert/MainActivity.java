@@ -4,6 +4,10 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.TextView;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,10 +16,16 @@ import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
 
+    TextView CAD,CEF,USD,JPY,TR;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        CAD = (TextView)findViewById(R.id.CADtext);
+        CEF =(TextView)findViewById(R.id.CEFtext);
+        USD =(TextView)findViewById(R.id.USDtext);
+        JPY =(TextView)findViewById(R.id.JPYtext);
+        TR = (TextView)findViewById(R.id.TRtext);
     }
 
     public void GetRates(){
@@ -73,6 +83,18 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
+
+            try{
+
+                JSONObject jsonObject = new JSONObject(s);
+
+                JSONObject rates = new JSONObject(jsonObject.getString("rates"));
+                TR.setText(rates.getString("TRY"));
+
+
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
     }
 }
