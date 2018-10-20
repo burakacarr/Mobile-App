@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         TR = (TextView)findViewById(R.id.TRtext);
     }
 
-    public void GetRates(){
+    public void GetRates(View view){
 
         DownloadData downloadData = new DownloadData();
 
@@ -66,14 +67,11 @@ public class MainActivity extends AppCompatActivity {
                     result += character;
 
                     data = ınputStreamReader.read();
-
-
-
                 }
 
 
             }catch (Exception e){
-                e.printStackTrace();
+                // e.printStackTrace();
                 return null;
 
             }
@@ -89,7 +87,13 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject jsonObject = new JSONObject(s);
 
                 JSONObject rates = new JSONObject(jsonObject.getString("rates"));
-                TR.setText(rates.getString("TRY"));
+                TR.setText("TRY: "+ rates.getString("TRY"));
+                CAD.setText("CAD: "+ rates.getString("CAD"));
+                USD.setText("USD: "+ rates.getString("USD"));
+                CEF.setText("CHF: "+ rates.getString("CHF"));
+                JPY.setText("JPY: "+ rates.getString("JPY"));
+
+
 
 
             }catch (Exception e){
